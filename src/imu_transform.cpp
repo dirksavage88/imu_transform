@@ -31,9 +31,9 @@ public:
 
 			// Perform rotation
 			auto rotation_matrix = tf2::Matrix3x3(
-										0, 0, 1,
-										-1, 0, 0,
-										0, -1, 0);
+										0, -1, 0,
+										0, 0, -1,
+										1, 0, 0);
 
 			tf2::Vector3 rotated_vector = tf2::Transform(rotation_matrix)(imu_acc);
 
