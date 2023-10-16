@@ -19,7 +19,7 @@ public:
 
 		_fc_imu_sub = this->create_subscription<px4_msgs::msg::SensorCombined>("/fmu/out/sensor_combined", qos,
 		[this](const px4_msgs::msg::SensorCombined::UniquePtr msg) {
-			std::cout << "RECEIVED SENSOR COMBINED DATA"   << std::endl;
+			// std::cout << "RECEIVED SENSOR COMBINED DATA"   << std::endl;
 
 			// Publish IMU topic
 			auto imu_msg = sensor_msgs::msg::Imu();
