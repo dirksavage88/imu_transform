@@ -5,13 +5,13 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    imu_tranform_node = Node(
-        package='imu_transform',
-        executable='imu_transform',
-        output='screen',
-        shell=True,
-    )
+	imu_tranform_node = Node(
+		package='imu_transform',
+		executable='imu_transform',
+		output='screen',
+		shell=True,
+	)
 
-    return LaunchDescription([
-        imu_tranform_node
-    ])
+	return LaunchDescription([
+		imu_tranform_node
+	])
