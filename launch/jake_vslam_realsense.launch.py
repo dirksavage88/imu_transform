@@ -65,7 +65,7 @@ def generate_launch_description():
                     ('stereo_camera/left/camera_info', 'camera/infra1/camera_info'),
                     ('stereo_camera/right/image', 'camera/infra2/image_rect_raw'),
                     ('stereo_camera/right/camera_info', 'camera/infra2/camera_info'),
-                    ('visual_slam/imu', 'jake/imu')]
+                    ('visual_slam/imu', 'imu_transform/imu')]
     )
 
     visual_slam_launch_container = ComposableNodeContainer(
