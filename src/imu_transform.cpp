@@ -19,12 +19,15 @@ public:
 		_fc_imu_sub = this->create_subscription<px4_msgs::msg::SensorCombined>("/fmu/out/sensor_combined", qos,
 			[this](const px4_msgs::msg::SensorCombined::UniquePtr msg) {
 
-				auto imu_msg = sensor_msgs::msg::Imu();
+				auto fc_imu_acc = tf2::Vector3();
+				fc_imu_acc.setX(msg->accelerometer_m_s2[0]);
+				fc_imu_acc.setY(msg->accelerometer_m_s2[1]);
+				fc_imu_acc.setZ(msg->accelerometer_m_s2[2]);
 
-				auto imu_acc = tf2::Vector3();
-				imu_acc.setX(msg->accelerometer_m_s2[0]);
-				imu_acc.setY(msg->accelerometer_m_s2[1]);
-				imu_acc.setZ(msg->accelerometer_m_s2[2]);
+				auto fc_imu_gyro = tf2::Vector3();
+				fc_imu_gyro.setX(msg->gyro_rad[0]);
+				fc_imu_gyro.setY(msg->gyro_rad[1]);
+				fc_imu_gyro.setZ(msg->gyro_rad[2]);
 
 				// Perform rotation
 				auto rotation_matrix = tf2::Matrix3x3(
@@ -32,15 +35,16 @@ public:
 											0, 0, -1,
 											1, 0, 0);
 
-				tf2::Vector3 rotated_vector = tf2::Transform(rotation_matrix)(imu_acc);
+				auto accel = tf2::Transform(rotation_matrix)(fc_imu_acc);
+				auto gyro = tf2::Transform(rotation_matrix)(fc_imu_gyro);
 
-				// TODO: how the fuck do I do this?
-				// imu_msg.linear_acceleration = tf2::toMsg(rotated_vector);
-				// tf2::toMsg(rotated_vector, imu_msg.linear_acceleration);
-
-				imu_msg.linear_acceleration.x = rotated_vector[0];
-				imu_msg.linear_acceleration.y = rotated_vector[1];
-				imu_msg.linear_acceleration.z = rotated_vector[2];
+				auto imu_msg = sensor_msgs::msg::Imu();
+				imu_msg.linear_acceleration.x = accel[0];
+				imu_msg.linear_acceleration.y = accel[1];
+				imu_msg.linear_acceleration.z = accel[2];
+				imu_msg.angular_velocity.x = gyro[0];
+				imu_msg.angular_velocity.y = gyro[1];
+				imu_msg.angular_velocity.z = gyro[2];
 
 				this->_imu_pub->publish(imu_msg);
 			});
