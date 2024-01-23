@@ -31,9 +31,9 @@ public:
 
 				// Perform rotation
 				auto rotation_matrix = tf2::Matrix3x3(
+											1, 0,  0,
 											0, -1, 0,
-											0, 0, -1,
-											1, 0, 0);
+											0, 0, -1);
 
 				auto accel = tf2::Transform(rotation_matrix)(fc_imu_acc);
 				auto gyro = tf2::Transform(rotation_matrix)(fc_imu_gyro);
@@ -45,7 +45,9 @@ public:
 				imu_msg.angular_velocity.x = gyro[0];
 				imu_msg.angular_velocity.y = gyro[1];
 				imu_msg.angular_velocity.z = gyro[2];
-
+				imu_msg.orientation_covariance = {-1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+				imu_msg.linear_acceleration_covariance = {0.01, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.01}
+				imu_msg.angular_velocity_covariance = {0.01, 0.0, 0.0, 0.0, 0.01, 0.0, 0.0, 0.0, 0.01}
 				this->_imu_pub->publish(imu_msg);
 			});
 	}
