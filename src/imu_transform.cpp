@@ -39,6 +39,7 @@ public:
 				auto gyro = tf2::Transform(rotation_matrix)(fc_imu_gyro);
 
 				auto imu_msg = sensor_msgs::msg::Imu();
+				imu_msg.header.stamp = rclcpp::Clock(RCL_ROS_TIME).now();
 				imu_msg.linear_acceleration.x = accel[0];
 				imu_msg.linear_acceleration.y = accel[1];
 				imu_msg.linear_acceleration.z = accel[2];
