@@ -31,9 +31,9 @@ public:
 
 				// Perform rotation
 				auto rotation_matrix = tf2::Matrix3x3(
-											1, 0,  0,
-											0, -1, 0,
-											0, 0, -1);
+											0, -1,  0,
+											0,  0, -1,
+											1,  0,  0);
 
 				auto accel = tf2::Transform(rotation_matrix)(fc_imu_acc);
 				auto gyro = tf2::Transform(rotation_matrix)(fc_imu_gyro);
